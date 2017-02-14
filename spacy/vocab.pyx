@@ -52,7 +52,7 @@ cdef class Vocab:
     '''A map container for a language's LexemeC structs.
     '''
     @classmethod
-    def load(cls, path, lex_attr_getters=None, lemmatizer=True,
+    def load(cls, path, lex_attr_getters=None, lemmatizer=None,
              tag_map=True, serializer_freqs=True, oov_prob=True, **deprecated_kwargs):
         """
         Load the vocabulary from a path.
@@ -91,7 +91,7 @@ cdef class Vocab:
             with (path / 'vocab' / 'oov_prob').open('r', encoding='utf8') as file_:
                 oov_prob = float(file_.read())
             lex_attr_getters[PROB] = lambda text: oov_prob
-        if lemmatizer is True:
+        if lemmatizer is None:
             lemmatizer = Lemmatizer.load(path)
         if serializer_freqs is True and (path / 'vocab' / 'serializer.json').exists():
             with (path / 'vocab' / 'serializer.json').open('r', encoding='utf8') as file_:
